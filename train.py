@@ -2,7 +2,7 @@ from sklearn.ensemble import RandomForestClassifier
 import argparse
 import os
 import numpy as np
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import recall_score
 import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
@@ -11,15 +11,6 @@ from azureml.core.run import Run
 from azureml.data.dataset_factory import TabularDatasetFactory
 import requests
 import zipfile
-
-
-# TODO: Create TabularDataset using TabularDatasetFactory
-# Data is located at:
-
-url = "https://s3.amazonaws.com/video.udacity-data.com/topher/2019/January/5c534768_creditcardfraud/creditcardfraud.zip"
-filename = requests.get(url).content
-zf = ZipFile( BytesIO(filename), 'r' )
-zf.extractall()
 
 transactions_df = pd.read_csv('./creditcard.csv')
 
@@ -54,8 +45,9 @@ def main():
     model = RandomForestClassifier(n_estimators=args.n_estimators, max_depth=args.max_depth,
     min_samples_split=args.min_samples_split, max_features=args.max_features).fit(x_train, y_train)
 
-    accuracy = model.score(x_test, y_test)
-    run.log("Accuracy", np.float(accuracy))
+    y_pred = model.predict(x_test)
+    recall = recall_score(y_test, y_pred, average='weighted')
+    run.log("recall_score_weighted", np.float(recall))
 
     os.makedirs('outputs', exist_ok=True)
     joblib.dump(model, 'outputs/model.joblib')
