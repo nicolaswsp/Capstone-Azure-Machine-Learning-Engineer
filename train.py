@@ -9,23 +9,26 @@ from sklearn.preprocessing import OneHotEncoder
 import pandas as pd
 from azureml.core.run import Run
 from azureml.data.dataset_factory import TabularDatasetFactory
+import requests
+import zipfile
 
 
 # TODO: Create TabularDataset using TabularDatasetFactory
 # Data is located at:
 
-url_path = "x"
+url = "https://s3.amazonaws.com/video.udacity-data.com/topher/2019/January/5c534768_creditcardfraud/creditcardfraud.zip"
+filename = requests.get(url).content
+zf = ZipFile( BytesIO(filename), 'r' )
+zf.extractall()
 
-ds = TabularDatasetFactory.from_delimited_files(url_path)
-
-transactions_df = ds.to_pandas_dataframe()
+transactions_df = pd.read_csv('./creditcard.csv')
 
 # create the features dataframe
 x = transactions_df.iloc[:, :-1]
 # create the data label
 y = transactions_df['Class']
 
-# TODO: Split data into train and test sets.
+# TODO: Split data into id train and test sets.
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=50, shuffle=True)
 
