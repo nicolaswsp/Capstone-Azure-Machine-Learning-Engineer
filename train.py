@@ -1,3 +1,4 @@
+import sklearn
 from sklearn.ensemble import RandomForestClassifier
 import argparse
 import os
@@ -11,8 +12,11 @@ from azureml.core.run import Run
 from azureml.data.dataset_factory import TabularDatasetFactory
 import requests
 import zipfile
+from azureml.core import Workspace, Dataset
 
-transactions_df = pd.read_csv('./creditcard.csv')
+ws = Workspace.from_config()
+dataset = Dataset.get_by_name(workspace=ws, name='Banking_Transactions')
+transactions_df = dataset.to_pandas_dataframe()
 
 # create the features dataframe
 x = transactions_df.iloc[:, :-1]
@@ -47,7 +51,7 @@ def main():
 
     y_pred = model.predict(x_test)
     recall = recall_score(y_test, y_pred, average='weighted')
-    run.log("recall_score_weighted", np.float(recall))
+    run.log("AUC_weighted", np.float(recall))
 
     os.makedirs('outputs', exist_ok=True)
     joblib.dump(model, 'outputs/model.joblib')
