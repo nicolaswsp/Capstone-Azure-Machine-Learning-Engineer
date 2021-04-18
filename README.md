@@ -1,4 +1,4 @@
-# Your Project Title Here
+# Training and deploying a credit card fraud detection model in Azure Machine Learning Studio
 
 This project aims to demonstrate how to train a model using Azure Machine Learning Studio and put it in production to an end user. The dataset used was Credit Card Fraud Detection dataset provided in the Kaggle website https://www.kaggle.com/mlg-ulb/creditcardfraud, where the goal is to predict whether a banking transaction would result in fraud based on several features. The training process was made using Auto ML and also HyperDrive through Azure Machine Learning Studio. After that, it was chosen the best model to accordingly to the best algorithm, VotingEnsemble, and deployed into production. With the deployed model, it was enabled the Application Insight using Azure Python SDK. The model was consumed using the deployed scoring URI and running the a notebook cell against the API producing JSON output from the model. 
 
