@@ -1,16 +1,16 @@
 # Your Project Title Here
 
-This project aims to demonstrate how to train a model using Azure Machine Learning Studio and put it in production to an end user. The dataset used was Credit Card Fraud Detection dataset provided in the Kaggle website https://www.kaggle.com/mlg-ulb/creditcardfraud, where the goal is to predict whether a banking transaction would result in fraud based on several features. The training process was made using Auto ML and also Hypervisor through Azure Machine Learning Studio. After that, it was chosen the best model to accordingly to the best algorithm, VotingEnsemble, and deployed into production. With the deployed model, it was enabled the Application Insight using Azure Python SDK. The model was consumed using the deployed scoring URI and running the a notebook cell against the API producing JSON output from the model. 
+This project aims to demonstrate how to train a model using Azure Machine Learning Studio and put it in production to an end user. The dataset used was Credit Card Fraud Detection dataset provided in the Kaggle website https://www.kaggle.com/mlg-ulb/creditcardfraud, where the goal is to predict whether a banking transaction would result in fraud based on several features. The training process was made using Auto ML and also HyperDrive through Azure Machine Learning Studio. After that, it was chosen the best model to accordingly to the best algorithm, VotingEnsemble, and deployed into production. With the deployed model, it was enabled the Application Insight using Azure Python SDK. The model was consumed using the deployed scoring URI and running the a notebook cell against the API producing JSON output from the model. 
 
 ## Dataset
 
 ### Overview
 
-The dataset used was Credit Card Fraud Detection dataset provided in the Kaggle website https://www.kaggle.com/mlg-ulb/creditcardfraud. The datasets contains transactions made by credit cards in September 2013 by european cardholders. This dataset presents transactions that occurred in two days, where we have 492 frauds out of 284,807 transactions. The dataset is highly unbalanced, the positive class (frauds) account for 0.172% of all transactions. It contains only numerical input variables which are the result of a PCA transformation.
+The dataset used was Credit Card Fraud Detection dataset provided in the Kaggle website https://www.kaggle.com/mlg-ulb/creditcardfraud. The dataset contains transactions made by credit cards in September 2013 by european cardholders. This dataset presents transactions that occurred in two days, where we have 492 frauds out of 284,807 transactions. The dataset is highly imbalanced, the positive class (frauds) account for 0.172% of all transactions. It contains only numerical input variables which are the result of a PCA transformation.
 
 ### Task
 
-This project main objective is to predict fraud in credit card baking transactions help credit card companies to be able to recognize fraudant transaction to avoid future purcharses that were not requested from them. The datatset consists in 30 features containing only numerical input variables which are the result of a PCA transformation to predict the feature 'Class' that is the response variable and it takes value 1 in case of fraud and 0 otherwise.
+This project main objective is to predict fraud in credit card baking transactions help credit card companies to be able to recognize fraudant transaction to avoid future purcharses that were not requested from the customers. The datatset consists in 30 features containing only numerical input variables which are the result of a PCA transformation to predict the feature 'Class' that is the response variable and it takes value 1 in case of fraud and 0 otherwise.
 
 ### Access
 
@@ -47,17 +47,18 @@ The AutoML config was the following parameters:
 ### Results
 
 The best performing model was the VotingEnsemble among the several tested. It got an AUC_weighted of 0.97. Some of these models were LightGBM, Xgboost, ExtremeRandomTrees, StandardScalerWrapper, RandomForest. A voting ensemble works by combining the predictions from multiple models. It uses Soft Voting that predicts the class with the largest summed probability from models. The AutoML generates parameters of its inner estimators. It can be highlighted that the VotingEnsemble model used L1 Regularization as one of these parameters. The L1 Regularization adds "absolute value of magnitude" of coefficient as penalty term to the loss function shrinking the less important feature’s coefficient to zero thus, removing some feature altogether.
+
 Below you can see the `RunDetails` widget.
 
 ![diagram](./Images/Image5.png)
 
-The best model trained with it's parameters.
+The best model trained with its parameters.
 
 ![diagram](./Images/Image6.png)
 
 ## Hyperparameter Tuning
 
-For the hyperparameter tuning using Azure Hyperdrive was chosen to use and ensemble model through the Scikit-Learn library, using a random forest classifier since it is powerfull ensemble where you can use multiple decision trees. 
+For the hyperparameter tuning using Azure Hyperdrive was chosen to use an ensemble model through the Scikit-Learn library, using a random forest classifier since it is a powerfull ensemble where you can use multiple decision trees. 
 
 The hyperparameters tuned were the following:   
 * n_estimators - Inverse of regularization strength
@@ -80,7 +81,7 @@ The best parameters for the random forest classifier were max_depth=32, max_feat
 HyperDrive model run
 ![diagram](./Images/Image3.png)
 
-It can be seed the differents hyperparmeter and their influence in the model in the graph below. Using a higher number of hyperparameters during training, the model tends to get a better performance.
+It can be seen the differents hyperparmeter and their influence in the model in the graph below. Using a higher number of hyperparameters during training, the final model tends to get a better performance.
 
 Hyperparameters behavior
 ![diagram](./Images/Image4.png)
@@ -89,7 +90,7 @@ Below you can see the `RunDetails` widget.
 
 ![diagram](./Images/Image1.png)
 
-The best model trained with it's parameters.
+The best model trained with its parameters.
 
 ![diagram](./Images/Image2.png)
 
@@ -97,7 +98,7 @@ The best model trained with it's parameters.
 ## Model Deployment
 The model chosen to be deployed was the best auto ML model using the Azure Container Instance . It was not enable authentication on the endpoint, so to send requests and recieve predictions it is only required the scoring URI and the correct formatted data. 
 
-The deployed model with his healthy status
+The deployed model with its healthy status
 ![diagram](./Images/Image8.png)
 
 A sample of the data to be input in the deployed model
