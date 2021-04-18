@@ -8,7 +8,7 @@ from azureml.core.model import Model
 def init():
     global model
     
-    model_path = Model.get_model_path('best_automl_model')
+    model_path = Model.get_model_path('/outputs/')
     model = joblib.load(model_path)
 
 
